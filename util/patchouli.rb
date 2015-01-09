@@ -38,7 +38,7 @@ module MCollective
                 Open3.popen3('apt-get upgrade --just-print') do |stdin, stdout, stderr, wait_thr|
                     stdout.each do |line|
                         if (match = line.match(/Inst\s+(\w+)\s+\[(?:\d+:)?([\w,\.,-]+)\]\s+\(((?:\d+:)?([\w,\.,-]+))/)) then
-                            output << "#{match[1]}:\n\tinstalled: #{match[2]}\n\tcandidate: #{match[3]}\n"
+                            output << "#{match[1]} - installed: #{match[2]} available: #{match[3]}\n"
                         end
                     end
                 end
