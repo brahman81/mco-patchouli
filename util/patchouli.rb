@@ -32,14 +32,56 @@ module MCollective
                 end
             end
 
+            def self.upgrade
+                manager = packagemanager
+                if manager == :apt
+                    return apt_upgrade
+                end
+            end
+
+            def self.dist_upgrade
+                manager = packagemanager
+                if manager == :apt
+                    return apt_dist_upgrade
+                end
+            end
+
             def self.apt_parse_updates
                 require 'open3'
                 output = "\n" # prefix with a newline
-                Open3.popen3('apt-get upgrade --just-print') do |stdin, stdout, stderr, wait_thr|
+                Open3.popen3('apt-get update && apt-get upgrade --just-print') do |stdin, stdout, stderr, wait_thr|
                     stdout.each do |line|
                         if (match = line.match(/Inst\s+(\w+)\s+\[(?:\d+:)?([\w,\.,-]+)\]\s+\(((?:\d+:)?([\w,\.,-]+))/)) then
                             output << "#{match[1]} - installed: #{match[2]} available: #{match[3]}\n"
                         end
+                    end
+                end
+                return output
+            end
+
+            def self.apt_upgrade
+                require 'open3'
+                output = "\n" # prefix with a newline
+                # assume yes, upgrade config only if it has not been modified locally.
+                Open3.popen3('apt-get upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"') do |stdin, stdout, stderr, wait_thr|
+                    if wait_thr.value == 0 then
+                        output << "packages updated successfully"
+                    else
+                        output << "some errors were encountered please perform a manual check on this node"
+                    end
+                end
+                return output
+            end
+
+            def self.apt_dist_upgrade
+                require 'open3'
+                output = "\n" # prefix with a newline
+                # assume yes, upgrade config only if it has not been modified locally.
+                Open3.popen3('apt-get dist-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"') do |stdin, stdout, stderr, wait_thr|
+                    if wait_thr.value == 0 then
+                        output << "packages updated successfully"
+                    else
+                        output << "some errors were encountered please perform a manual check on this node"
                     end
                 end
                 return output

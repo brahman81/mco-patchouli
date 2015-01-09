@@ -31,3 +31,21 @@ action 'list', :description => "patchouli list available updates" do
             :display_as  => "updates",
             :default     => "n/a"
 end
+
+action 'upgrade', :description => "patchouli install available updates" do
+    display :always  # supported in 0.4.7 and newer only
+
+    output  :reply,
+            :description => "confirmation message",
+            :display_as  => "message",
+            :default     => "n/a"
+end
+
+action 'dist-upgrade', :description => "patchouli install held back updates" do
+    display :always  # supported in 0.4.7 and newer only
+
+    output  :reply,
+            :description => "confirmation message",
+            :display_as  => "message",
+            :default     => "n/a"
+end
