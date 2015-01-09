@@ -37,6 +37,22 @@ module MCollective
                     reply.fail! "error: #{error}"
                 end
             end
+
+            action 'upgrade' do
+                begin
+                    reply[:output] = Util::Patchouli.upgrade
+                rescue => error
+                    reply.fail! "error: #{error}"
+                end
+            end
+
+            action 'dist-upgrade' do
+                begin
+                    reply[:output] = Util::Patchouli.dist_upgrade
+                rescue => error
+                    reply.fail! "error: #{error}"
+                end
+            end
         end
     end
 end
