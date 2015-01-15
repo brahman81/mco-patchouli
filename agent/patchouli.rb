@@ -28,7 +28,7 @@ module MCollective
             :license     => "GPLv3",
             :version     => "0.1",
             :url         => "https://github.com/brahman81/mco-patchouli",
-            :timeout     => 300
+            :timeout     => 600
 
             action 'list' do
                 begin
