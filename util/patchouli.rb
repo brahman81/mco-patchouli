@@ -64,7 +64,7 @@ module MCollective
                 output = "\n" # prefix with a newline
                 # assume yes, upgrade config only if it has not been modified locally.
                 Open3.popen3('export DEBIAN_FRONTEND=noninteractive; apt-get upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"') do |stdin, stdout, stderr, wait_thr|
-                    unless stderr then
+                    if stderr.to_s.empty? then
                         output << "packages updated successfully"
                     else
                         output << "some errors were encountered please perform a manual check on this node"
@@ -78,7 +78,7 @@ module MCollective
                 output = "\n" # prefix with a newline
                 # assume yes, upgrade config only if it has not been modified locally.
                 Open3.popen3('export DEBIAN_FRONTEND=noninteractive; apt-get dist-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"') do |stdin, stdout, stderr, wait_thr|
-                    unless stderr then
+                    if stderr.to_s.empty? then
                         output << "packages updated successfully"
                     else
                         output << "some errors were encountered please perform a manual check on this node"
