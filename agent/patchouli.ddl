@@ -21,7 +21,7 @@ metadata    :name        => "Patchouli Mcollective Agent",
             :license     => "GPLv3",
             :version     => "0.1",
             :url         => "https://github.com/brahman81/mco-patchouli",
-            :timeout     => 300
+            :timeout     => 600
 
 action 'list', :description => "patchouli list available updates" do
     display :always  # supported in 0.4.7 and newer only
