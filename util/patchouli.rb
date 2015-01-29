@@ -70,7 +70,7 @@ module MCollective
 
             def self.updates_available?(type = :upgradable)
                 updates = self.get_updates()
-                if updates[type.to_sym] then
+                if updates[type.to_sym].to_i > 0 then
                     return true
                 else
                     return false
@@ -95,6 +95,7 @@ module MCollective
                 output = "\n" # prefix with a newline
                 # assume yes, upgrade config only if it has not been modified locally.
                 Open3.popen3('export DEBIAN_FRONTEND=noninteractive; apt-get upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"') do |stdin, stdout, stderr, wait_thr|
+                    stdout.read()
                     unless self.updates_available? then
                         output << "upgrade successful"
                     else
@@ -109,6 +110,7 @@ module MCollective
                 output = "\n" # prefix with a newline
                 # assume yes, upgrade config only if it has not been modified locally.
                 Open3.popen3('export DEBIAN_FRONTEND=noninteractive; apt-get dist-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"') do |stdin, stdout, stderr, wait_thr|
+                    stdout.read()
                     unless self.updates_available?('held_back') then
                         output << "dist-upgrade successful"
                     else
