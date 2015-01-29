@@ -84,8 +84,8 @@ module MCollective
                     if verbose then
                         output << updates[:packages].join("\n")
                     end
-                    output << "#{updates[:upgradable]} packages available\n"
-                    output << "#{updates[:held_back]} packages held back\n"
+                    output << "\n#{updates[:upgradable]} packages available"
+                    output << "\n#{updates[:held_back]} packages held back"
                 end
                 return output
             end
