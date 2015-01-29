@@ -51,7 +51,7 @@ module MCollective
                 output = {:packages => []}
                 Open3.popen3('apt-get update && apt-get upgrade --just-print') do |stdin, stdout, stderr, wait_thr|
                     stdout.each do |line|
-                        if (match = line.match(/Inst\s+(\w+)\s+\[(?:\d+:)?([\w,\.,-]+)\]\s+\(((?:\d+:)?([\w,\.,-]+))/)) then
+                        if (match = line.match(/Inst\s+([\w,-]+)\s+\[(?:\d+:)?([\w,\.,-]+)\]\s+\(((?:\d+:)?([\w,\.,-]+))/)) then
                             output[:packages].push("#{match[1]} - installed: #{match[2]} available: #{match[3]}")
                         elsif (match = line.match(/(\d+)\s+upgraded,\s+(\d+)\s+newly\s+installed,\s+(\d+)\s+to\s+remove\s+and\s+(\d+)\s+not\s+upgraded\./)) then
                             if match.length() > 4 then
