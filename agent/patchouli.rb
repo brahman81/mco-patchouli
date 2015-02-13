@@ -22,9 +22,17 @@ MCollective::Util.loadclass("MCollective::Util::Patchouli")
 module MCollective
     module Agent
         class Patchouli<RPC::Agent
+            metadata    :name        => "Patchouli Mcollective Agent",
+            :description => "Patch servers via Mcollective",
+            :author      => "Tom Llewellyn-Smith",
+            :license     => "GPLv3",
+            :version     => "0.1",
+            :url         => "https://github.com/brahman81/mco-patchouli",
+            :timeout     => 600
+
             action 'list' do
                 begin
-                    reply[:output] = Util::Patchouli.updates
+                    reply[:output] = Util::Patchouli.updates(request[:full])
                 rescue => error
                     reply.fail! "error: #{error}"
                 end
@@ -38,9 +46,9 @@ module MCollective
                 end
             end
 
-            action 'dist-upgrade' do
+            action 'dist' do
                 begin
-                    reply[:output] = Util::Patchouli.dist_upgrade
+                    reply[:output] = Util::Patchouli.dist
                 rescue => error
                     reply.fail! "error: #{error}"
                 end

@@ -25,6 +25,13 @@ metadata    :name        => "Patchouli Mcollective Agent",
 
 action 'list', :description => "patchouli list available updates" do
     display :always  # supported in 0.4.7 and newer only
+
+    input   :full,
+            :description    => 'Show full package list',
+            :prompt         => 'Full Package List',
+            :type           => :boolean,
+            :default        => false,
+            :optional       => true
  
     output  :reply,
             :description => "available package updates",
@@ -41,7 +48,7 @@ action 'upgrade', :description => "patchouli install available updates" do
             :default     => "n/a"
 end
 
-action 'dist-upgrade', :description => "patchouli install held back updates" do
+action 'dist', :description => "patchouli install held back updates" do
     display :always  # supported in 0.4.7 and newer only
 
     output  :reply,

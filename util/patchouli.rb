@@ -25,10 +25,10 @@ module MCollective
                 end
             end
 
-            def self.updates
+            def self.updates(full = false)
                 manager = packagemanager
                 if manager == :apt
-                    return apt_parse_updates
+                    return apt_parse_updates(full)
                 end
             end
 
@@ -39,7 +39,7 @@ module MCollective
                 end
             end
 
-            def self.dist_upgrade
+            def self.dist
                 manager = packagemanager
                 if manager == :apt
                     return apt_dist_upgrade
@@ -77,11 +77,11 @@ module MCollective
                 end
             end
 
-            def self.apt_parse_updates(verbose = false)
+            def self.apt_parse_updates(full = false)
                 require 'open3'
                 output = "\n" # prefix with a newline
                 if updates = self.get_updates() then
-                    if verbose then
+                    if full then
                         output << updates[:packages].join("\n")
                     end
                     output << "\n#{updates[:upgradable]} packages available"
