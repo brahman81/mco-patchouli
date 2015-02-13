@@ -18,6 +18,51 @@
 module MCollective
     class Application
         class Patchouli<MCollective::Application
+            option :list,
+                :description    => "List Packages (upgradable, held back)",
+                :arguments      => ["-l", "--list"],
+                :type           => :bool,
+                :required       => false
+
+            option :upgrade,
+                :description    => "Upgrade all packages",
+                :arguments      => ["-u", "--upgrade"],
+                :type           => :bool,
+                :required       => false
+
+            option :dist,
+                :description    => "Dist upgrade all packages",
+                :arguments      => ["--dist"],
+                :type           => :bool,
+                :required       => false
+
+            option :full,
+                :description    => "full package list",
+                :arguments      => ["-f", "--full"],
+                :type           => :bool,
+                :required       => false
+
+            def main
+                patchouli = rpcclient("patchouli")
+                if configuration[:list] then
+                    if configuration[:full] then
+                        resp = patchouli.list(:full => configuration[:full])
+                    else
+                        resp = patchouli.list()
+                    end
+                elsif configuration[:upgrade] then
+                    resp = patchouli.upgrade()
+                elsif configuration[:dist] then
+                    resp = patchouli.dist()
+                else
+                    puts 'error: requires an action'
+                end
+                resp.each do |result|
+                    print result[:sender] + ':'
+                    puts result[:data][:output]
+                end
+                printrpcstats :summarize => true, :caption => "%s results" % configuration[:command]
+            end
         end
     end
 end
